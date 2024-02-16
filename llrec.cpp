@@ -36,7 +36,7 @@ void hasLarge(Node *&head, Node *&smaller, Node *larger, int pivot){
     }
     else {
         smaller = head;
-        hasBoth(head->next, smaller, larger, pivot);
+        hasBoth(head->next, smaller, larger, pivot, smaller, larger);
     }
 }
 
@@ -49,41 +49,26 @@ void hasSmall(Node *&head, Node *smaller, Node *&larger, int pivot){
     }
     else {
         larger = head;
-        hasBoth(head, smaller, larger, pivot);
+        hasBoth(head->next, smaller, larger, pivot, smaller, larger);
     }
 }
 
-void hasBoth(Node *head, Node *smaller, Node *larger, int pivot){
+void hasBoth(Node *head, Node *smaller, Node *larger, int pivot, Node* lastS, Node* lastL){
     if (head == NULL){
+        lastS->next = NULL;
+        lastL->next = NULL;
         return;
-    }
-    else if (head->next != NULL && head->next->next == NULL){
-        if (head->val > pivot){
-            if (larger != head){
-                larger->next = head;
-            }
-            if (head->next->val <= pivot){
-                smaller->next = head->next;
-                larger->next->next = NULL;
-            }
-        }
-        else {
-            if (smaller != head){
-                smaller->next = head;
-            }
-            if (head->next->val > pivot){
-                larger->next = head->next;
-                smaller->next->next = NULL;
-            }
-        }
-        
     }
     else if (head->val > pivot){
         larger->next = head;
-        hasBoth(head->next, smaller, larger->next, pivot);
+        larger = larger->next;
+        lastL = larger;
+        hasBoth(head->next, smaller, larger, pivot, lastS, lastL);
     }
     else {
         smaller->next = head;
-        hasBoth(head->next, smaller->next, larger, pivot);
+        smaller = smaller->next;
+        lastS = smaller;
+        hasBoth(head->next, smaller, larger, pivot, lastS, lastL);
     }
 }

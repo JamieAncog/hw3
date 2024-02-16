@@ -19,12 +19,6 @@ void llpivot(Node *&head, Node *&smaller, Node *&larger, int pivot){
         smaller = head;
         hasSmall(head->next, smaller, larger, pivot);
     }
-    if (smaller != NULL && smaller->next != NULL && smaller->next->val > pivot){
-        smaller->next = NULL;
-    }
-    if (larger != NULL && larger->next != NULL && larger->next->val <= pivot){
-        larger->next = NULL;
-    }
 }
 
 void hasLarge(Node *&head, Node *&smaller, Node *larger, int pivot){

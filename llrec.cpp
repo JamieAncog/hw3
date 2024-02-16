@@ -19,20 +19,20 @@ void llpivot(Node *&head, Node *&smaller, Node *&larger, int pivot){
         smaller = head;
         hasSmall(head->next, smaller, larger, pivot);
     }
-    if (smaller->next->val > pivot){
+    if (smaller != NULL && smaller->next != NULL && smaller->next->val > pivot){
         smaller->next = NULL;
     }
-    if (larger->next->val <= pivot){
+    if (larger != NULL && larger->next != NULL && larger->next->val <= pivot){
         larger->next = NULL;
     }
 }
 
-void hasLarge(Node *&head, Node *&smaller, Node *&larger, int pivot){
+void hasLarge(Node *&head, Node *&smaller, Node *larger, int pivot){
     if (head == NULL){
         return;
     }
     else if (head->val > pivot){
-        hasLarge(head->next, smaller, larger, pivot);
+        hasLarge(head->next, smaller, larger->next, pivot);
     }
     else {
         smaller = head;
@@ -40,33 +40,37 @@ void hasLarge(Node *&head, Node *&smaller, Node *&larger, int pivot){
     }
 }
 
-void hasSmall(Node *&head, Node *&smaller, Node *&larger, int pivot){
+void hasSmall(Node *&head, Node *smaller, Node *&larger, int pivot){
     if (head == NULL){
         return;
     }
-    else if (head->val > pivot){
+    else if (head->val <= pivot){
+        hasSmall(head->next, smaller->next, larger, pivot);
+    }
+    else {
         larger = head;
         hasBoth(head, smaller, larger, pivot);
     }
-    else {
-        hasSmall(head, smaller, larger, pivot);
-    }
 }
 
-void hasBoth(Node *&head, Node *smaller, Node *larger, int pivot){
+void hasBoth(Node *head, Node *smaller, Node *larger, int pivot){
     if (head == NULL){
         return;
     }
     else if (head->next != NULL && head->next->next == NULL){
         if (head->val > pivot){
-            larger->next = head;
+            if (larger != head){
+                larger->next = head;
+            }
             if (head->next->val <= pivot){
                 smaller->next = head->next;
                 larger->next->next = NULL;
             }
         }
         else {
-            smaller->next = head;
+            if (smaller != head){
+                smaller->next = head;
+            }
             if (head->next->val > pivot){
                 larger->next = head->next;
                 smaller->next->next = NULL;

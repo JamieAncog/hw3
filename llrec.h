@@ -81,13 +81,42 @@ Node* llfilter(Node* head, Comp pred);
 //*****************************************************************************
 
 template <typename Comp>
+void llfilterHelper(Node* head, Comp pred){
+    if (head == NULL || head->next == NULL){
+        return;
+    }
+    else if (pred.(head->next->val)){
+        Node* temp = head->next;
+        head->next = head->next->next;
+        delete temp;
+        llfilterHelper(head, pred);
+    }
+    else {
+        llfilterHelper(head->next, pred);
+    }
+}
+
+template <typename Comp>
 Node* llfilter(Node* head, Comp pred)
 {
     //*********************************************
     // Provide your implementation below
     //*********************************************
-
-
+    if (head == NULL){
+        return NULL;
+    }
+    llfilterHelper(head, pred);
+    if (pred.(head->val)){
+        if (head->next == NULL){
+            return NULL;
+        }
+        else {
+            Node* temp = head;
+            head = head->next;
+            delete head;
+        }
+    }
+    return head;
 }
 
 #endif

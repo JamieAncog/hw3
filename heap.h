@@ -3,10 +3,6 @@
 #include <functional>
 #include <stdexcept>
 
-//delete
-#include <iostream>
-using namespace std;
-
 template <typename T, typename PComparator = std::less<T> >
 class Heap
 {
@@ -63,7 +59,7 @@ public:
    */
   size_t size() const;
 
-  //private: 
+  private: 
   /// Add whatever helper functions and data members you need below
   std::vector<T> data;
   int arySize;

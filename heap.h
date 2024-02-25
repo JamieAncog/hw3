@@ -3,6 +3,10 @@
 #include <functional>
 #include <stdexcept>
 
+//delete
+#include <iostream>
+using namespace std;
+
 template <typename T, typename PComparator = std::less<T> >
 class Heap
 {
@@ -59,16 +63,52 @@ public:
    */
   size_t size() const;
 
-private:
+  //private: 
   /// Add whatever helper functions and data members you need below
-
-
-
+  std::vector<T> data;
+  int arySize;
+  PComparator comp;
 
 };
 
 // Add implementation of member functions here
 
+template <typename T, typename PComparator>
+Heap<T,PComparator>::Heap(int m, PComparator c): 
+  arySize(m), comp(c)
+{ }
+
+template <typename T, typename PComparator>
+Heap<T,PComparator>::~Heap(){
+
+}
+
+template <typename T, typename PComparator>
+void Heap<T,PComparator>::push(const T& item){
+    data.push_back(item);
+    if (data.size() == 1) { return; }
+    std::size_t index = data.size() - 1;
+    std::size_t parent_index = (index - 1) / arySize;
+    while (parent_index >= 0 && !comp(data[parent_index], data[index])) {
+        T& current = data[index];
+        T& parent = data[parent_index];
+        std::swap(current, parent);
+        if (parent_index == 0) {break;}
+        index = parent_index;
+        parent_index = (index - 1) / arySize;
+    }
+}
+
+template <typename T, typename PComparator>
+bool Heap<T,PComparator>::empty() const{
+  if (data.size() == 0) { return true; }
+  return false;
+}
+
+template <typename T, typename PComparator>
+size_t Heap<T,PComparator>::size() const{
+  return data.size();
+}
 
 // We will start top() for you to handle the case of 
 // calling top on an empty heap
@@ -81,14 +121,11 @@ T const & Heap<T,PComparator>::top() const
     // ================================
     // throw the appropriate exception
     // ================================
-
-
+    throw std::underflow_error("Cannot call top()");
   }
   // If we get here we know the heap has at least 1 item
   // Add code to return the top element
-
-
-
+  return data[0];
 }
 
 
@@ -101,13 +138,36 @@ void Heap<T,PComparator>::pop()
     // ================================
     // throw the appropriate exception
     // ================================
-
-
+    throw std::underflow_error("Cannot call pop()");
   }
 
+    data[0] = data[data.size()-1];
+    data.pop_back();
 
-
+    std::size_t index = 0;
+    std::size_t child_index = (arySize * index) + 1;
+    int in = 1;
+    while (in < arySize && child_index < data.size()){
+      if (comp(data[child_index+in], data[child_index])){
+        child_index += in;
+      }
+      in++;
+    }
+    while (child_index < data.size() && !comp(data[index], data[child_index])) {
+        for (int i = 1; i < arySize; i++){
+          if (child_index+1 < data.size() && comp(data[child_index+1], data[child_index])){
+            child_index++;
+          }
+        }
+        T& current = data[index];
+        T& child = data[child_index];
+        std::swap(current, child);
+        if (child_index == data.size()-1) {break;}
+        index = child_index;
+        child_index = (arySize * index) + 1;
+    }
 }
+
 
 
 

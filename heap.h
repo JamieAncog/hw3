@@ -2,6 +2,10 @@
 #define HEAP_H
 #include <functional>
 #include <stdexcept>
+#include <vector>
+
+using namespace std;
+#include <iostream>
 
 template <typename T, typename PComparator = std::less<T> >
 class Heap
@@ -59,7 +63,7 @@ public:
    */
   size_t size() const;
 
-  private: 
+  //private: 
   /// Add whatever helper functions and data members you need below
   std::vector<T> data;
   int arySize;
@@ -142,25 +146,20 @@ void Heap<T,PComparator>::pop()
 
     std::size_t index = 0;
     std::size_t child_index = (arySize * index) + 1;
-    int in = 1;
-    while (in < arySize && child_index < data.size()){
-      if (comp(data[child_index+in], data[child_index])){
-        child_index += in;
+    for (int i = 1; i < arySize; i++){
+      if (child_index+1 < data.size() && comp(data[child_index+1], data[child_index])){
+          child_index++;
       }
-      in++;
     }
     while (child_index < data.size() && !comp(data[index], data[child_index])) {
+        std::swap(data[index], data[child_index]);
+        index = child_index;
+        child_index = (arySize * index) + 1;
         for (int i = 1; i < arySize; i++){
           if (child_index+1 < data.size() && comp(data[child_index+1], data[child_index])){
             child_index++;
           }
         }
-        T& current = data[index];
-        T& child = data[child_index];
-        std::swap(current, child);
-        if (child_index == data.size()-1) {break;}
-        index = child_index;
-        child_index = (arySize * index) + 1;
     }
 }
 

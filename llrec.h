@@ -85,7 +85,7 @@ void llfilterHelper(Node* head, Comp pred){
     if (head == NULL || head->next == NULL){
         return;
     }
-    else if (pred.(head->next->val)){
+    else if (pred(head->next->val)){
         Node* temp = head->next;
         head->next = head->next->next;
         delete temp;
@@ -106,14 +106,14 @@ Node* llfilter(Node* head, Comp pred)
         return NULL;
     }
     llfilterHelper(head, pred);
-    if (pred.(head->val)){
+    if (pred(head->val)){
         if (head->next == NULL){
             return NULL;
         }
         else {
             Node* temp = head;
             head = head->next;
-            delete head;
+            delete temp;
         }
     }
     return head;

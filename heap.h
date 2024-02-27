@@ -4,9 +4,6 @@
 #include <stdexcept>
 #include <vector>
 
-using namespace std;
-#include <iostream>
-
 template <typename T, typename PComparator = std::less<T> >
 class Heap
 {
@@ -63,7 +60,7 @@ public:
    */
   size_t size() const;
 
-  //private: 
+  private: 
   /// Add whatever helper functions and data members you need below
   std::vector<T> data;
   int arySize;
@@ -149,17 +146,18 @@ void Heap<T,PComparator>::pop()
     bool isHeap = false;
     while (!isHeap && child_index < data.size()){
       int in = 0;
+      int best_index = child_index;
       while (in < arySize && child_index+in < data.size()){
-        if (comp(data[child_index+in], data[child_index])){
-          child_index = (arySize*index) + in + 1;
+        if (comp(data[child_index+in], data[best_index])){
+          best_index = child_index+in;
         }
         in++;
       }
-      if (comp(data[child_index],data[index])){
+      if (comp(data[best_index],data[index])){
         T& current = data[index];
-        T& child = data[child_index];
+        T& child = data[best_index];
         std::swap(current, child);
-        index = child_index;
+        index = best_index;
         child_index = (arySize*index) + 1;
       }
       else {

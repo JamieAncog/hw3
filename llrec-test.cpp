@@ -89,10 +89,6 @@ int main(int argc, char* argv[])
     Node* small;
     Node* large;
     llpivot(head, small, large, 5);
-    if (small == NULL) { cout << "Yay small!!!" << endl; }
-    else { cout << "NOOOO!!!! smalllllll" << endl;}
-    if (large == NULL) { cout << "Yay large!!!" << endl; }
-    else { cout << "NOOOO!!!! largeeeeeee" << endl;}
     while (small){
         Node* temp = small;
         small = small->next;

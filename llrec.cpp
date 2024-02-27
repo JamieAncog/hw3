@@ -8,7 +8,12 @@ using namespace std;
 //*********************************************
 
 void llpivot(Node *&head, Node *&smaller, Node *&larger, int pivot){
-    if (head == NULL){
+    smaller = NULL;
+    larger = NULL;
+    return;
+    if (head == nullptr){
+        smaller = nullptr;
+        larger = nullptr;
         return;
     }
     else if (head->val > pivot){
@@ -22,7 +27,7 @@ void llpivot(Node *&head, Node *&smaller, Node *&larger, int pivot){
 }
 
 void hasLarge(Node *&head, Node *&smaller, Node *larger, int pivot){
-    if (head == NULL){
+    if (!head){
         return;
     }
     else if (head->val > pivot){

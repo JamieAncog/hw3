@@ -86,13 +86,24 @@ int main(int argc, char* argv[])
     print(head);
 
     // Test out your linked list code
-    Node* small = NULL;
-    Node* large = NULL;
+    Node* small;
+    Node* large;
     llpivot(head, small, large, 5);
-    print(small);
-    print(large);
+    if (small == NULL) { cout << "Yay small!!!" << endl; }
+    else { cout << "NOOOO!!!! smalllllll" << endl;}
+    if (large == NULL) { cout << "Yay large!!!" << endl; }
+    else { cout << "NOOOO!!!! largeeeeeee" << endl;}
+    while (small){
+        Node* temp = small;
+        small = small->next;
+        delete temp;
+    }
+    while (large){
+        Node* temp = large;
+        large = large->next;
+        delete temp;
+    }
 
-    
     return 0;
 
 }

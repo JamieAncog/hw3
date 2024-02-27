@@ -50,7 +50,7 @@ struct Node
 void llpivot(Node *&head, Node *&smaller, Node *&larger, int pivot);
 void hasLarge(Node *&head, Node *&smaller, Node *larger, int pivot);
 void hasSmall(Node *&head, Node *smaller, Node *&larger, int pivot);
-void hasBoth(Node *head, Node *smaller, Node *larger, int pivot, Node* lastS, Node* lastL);
+void hasBoth(Node* head, Node *smaller, Node *larger, int pivot, Node* lastS, Node* lastL);
 
 /**
  * Given a linked list pointed to by head, removes (filters out) nodes
@@ -81,18 +81,21 @@ Node* llfilter(Node* head, Comp pred);
 //*****************************************************************************
 
 template <typename Comp>
-void llfilterHelper(Node* head, Comp pred){
-    if (head == NULL || head->next == NULL){
+void llfilterHelper(Node* curr, Node* head, Comp pred){
+    if (head == NULL){
         return;
     }
-    else if (pred(head->next->val)){
+    else if (!pred(head->val)){
         Node* temp = head->next;
-        head->next = head->next->next;
-        delete temp;
-        llfilterHelper(head, pred);
+        curr->next = head;
+        head->next = NULL;
+        llfilterHelper(head, temp, pred);
     }
     else {
-        llfilterHelper(head->next, pred);
+        Node* temp = head;
+        head = head->next;
+        delete temp;
+        llfilterHelper(curr, head, pred);
     }
 }
 
@@ -102,21 +105,13 @@ Node* llfilter(Node* head, Comp pred)
     //*********************************************
     // Provide your implementation below
     //*********************************************
-    if (head == NULL){
-        return NULL;
-    }
-    llfilterHelper(head, pred);
-    if (pred(head->val)){
-        if (head->next == NULL){
-            return NULL;
-        }
-        else {
-            Node* temp = head;
-            head = head->next;
-            delete temp;
-        }
-    }
-    return head;
+    if (head == NULL) { return NULL; }
+    Node* front = new Node(0, NULL);
+    llfilterHelper(front, head, pred);
+    Node* temp = front;
+    front = front->next;
+    delete temp;
+    return front;
 }
 
 #endif

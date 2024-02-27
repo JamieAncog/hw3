@@ -86,7 +86,7 @@ Heap<T,PComparator>::~Heap(){
 template <typename T, typename PComparator>
 void Heap<T,PComparator>::push(const T& item){
     data.push_back(item);
-    if (data.size() == 1) { return; }
+    if (data.size() == 1){return;}
     std::size_t index = data.size() - 1;
     std::size_t parent_index = (index - 1) / arySize;
     while (parent_index >= 0 && !comp(data[parent_index], data[index])) {
@@ -146,20 +146,25 @@ void Heap<T,PComparator>::pop()
 
     std::size_t index = 0;
     std::size_t child_index = (arySize * index) + 1;
-    for (int i = 1; i < arySize; i++){
-      if (child_index+1 < data.size() && comp(data[child_index+1], data[child_index])){
-          child_index++;
-      }
-    }
-    while (child_index < data.size() && !comp(data[index], data[child_index])) {
-        std::swap(data[index], data[child_index]);
-        index = child_index;
-        child_index = (arySize * index) + 1;
-        for (int i = 1; i < arySize; i++){
-          if (child_index+1 < data.size() && comp(data[child_index+1], data[child_index])){
-            child_index++;
-          }
+    bool isHeap = false;
+    while (!isHeap && child_index < data.size()){
+      int in = 0;
+      while (in < arySize && child_index+in < data.size()){
+        if (comp(data[child_index+in], data[child_index])){
+          child_index = (arySize*index) + in + 1;
         }
+        in++;
+      }
+      if (comp(data[child_index],data[index])){
+        T& current = data[index];
+        T& child = data[child_index];
+        std::swap(current, child);
+        index = child_index;
+        child_index = (arySize*index) + 1;
+      }
+      else {
+        isHeap = true;
+      }
     }
 }
 

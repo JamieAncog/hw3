@@ -48,9 +48,9 @@ struct Node
  *
  */
 void llpivot(Node *&head, Node *&smaller, Node *&larger, int pivot);
-void hasLarge(Node *&head, Node *&smaller, Node *larger, int pivot);
-void hasSmall(Node *&head, Node *smaller, Node *&larger, int pivot);
-void hasBoth(Node* head, Node *smaller, Node *larger, int pivot, Node* lastS, Node* lastL);
+void hasLarge(Node *&head, Node* curr, Node *&smaller, Node *larger, int pivot);
+void hasSmall(Node *&head, Node* curr, Node *smaller, Node *&larger, int pivot);
+void hasBoth(Node*& front, Node* head, Node *smaller, Node *larger, int pivot, Node* lastS, Node* lastL);
 
 /**
  * Given a linked list pointed to by head, removes (filters out) nodes
